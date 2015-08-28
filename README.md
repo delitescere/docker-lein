@@ -18,4 +18,9 @@ docker build -t delitescere/lein .
 docker run --rm -ti delitescere/lein repl
 ```
 
+## Notes
+
+If you have the `:eval-in nrepl` line in your `project.clj`, remove it
+otherwise you'll get "Connection Refused" errors when running the REPL.
+
 Enjoy smaller containers!
