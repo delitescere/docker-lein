@@ -15,12 +15,16 @@ docker build -t delitescere/lein .
 ## Example usage
 
 ```sh
-docker run --rm -ti delitescere/lein repl
+alias lein="$PWD/lein"
+lein test
+lein repl :headless # nREPL container is started for this directory
+lein repl :connect # nREPL client container connects to the detached nREPL server, no address is required
 ```
 
 ## Notes
 
-If you have the `:eval-in nrepl` line in your `project.clj`, remove it
-otherwise you'll get "Connection Refused" errors when running the REPL.
+If you have the `:eval-in nrepl` line in your `project.clj`, remove it otherwise you'll get "Connection Refused" errors when running the REPL.
+
+There is one nREPL server per directory to allow you to run multiple project REPLs at once if you want. Using Docker's network stack sharing, you don't need to specify the address for the client REPL. The history for each project's REPL is kept separate.
 
 Enjoy smaller containers!
