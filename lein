@@ -1,0 +1,37 @@
+#!/bin/sh
+
+repl_server() {
+  ##
+  # Start an nREPL server in a detached container.
+  # Uses the short SHA of the current working directory as the container name.
+  # Fixes to port 55555 so the client container has a known socket to bind to.
+  # Does not expose the port as we expect the client container to share this container's network stack.
+  ##
+  docker run ${volumeOpts} ${workdirOpt} --detach --restart=on-failure:3 --name="${serverContainerName}" delitescere/lein repl :headless :port ${nreplPort}
+}
+
+repl_client() {
+  ##
+  # Run an nREPL client in an interactive container and connect to an existing nREPL server container.
+  # Share network stack with the nREPL server container.
+  # Only specifies the port as "localhost" is assumed and being explicit can cause problems.
+  ##
+  docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --net="container:${serverContainerName}" delitescere/lein repl :connect :${nreplPort}
+}
+
+nreplPort=55555
+serverContainerName="nREPL-$(pwd | tr '/' '.')"
+volumeOpts="--volume=$PWD:/home/lein/code --volume=$HOME/.m2:/home/lein/.m2"
+workdirOpt="--workdir=/home/lein/code"
+
+if [ "$1" = "repl" ]; then
+  if [ "$2" = ":headless" ]; then
+    repl_server
+    exit $?
+  elif [ "$1" = "repl" ] && [ "$2" = ":connect" ]; then
+    repl_client
+    exit $?
+  fi
+fi
+
+docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty delitescere/lein $@
