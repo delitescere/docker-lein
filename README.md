@@ -2,9 +2,11 @@
 
 
 ## Introduction
-This is a minimal Docker image for [leiningen](https://github.com/technomancy/leiningen) tasks. It uses the base image [delitescere/docker-zulu](https://github.com/delitescere/docker-zulu).
+This is a minimal Docker image for [leiningen](https://github.com/technomancy/leiningen) tasks. It is from [delitescere/jdk](https://hub.docker.com/r/delitescere/jdk/) on Docker Hub.
 
-The pre-squashed size is 266.9 MB and after using [docker-squash](https://github.com/jwilder/docker-squash), it is just 186.2 MB (most of this is the JDK).
+The pre-squashed size is 267 MB and after using [docker-squash](https://github.com/jwilder/docker-squash), it is just 186 MB.
+
+This image is for development-time activities. You can run your packaged component in an image from [delitescere/java](https://hub.docker.com/r/delitescere/java/)) on Docker Hub (as long as you only need the JRE provided by "compact3" profile, which is likely).
 
 ## Build
 
@@ -17,8 +19,8 @@ docker build -t delitescere/lein .
 ```sh
 alias lein="$PWD/lein"
 lein test
-lein repl :headless # nREPL container is started for this directory
-lein repl :connect # nREPL client container connects to the detached nREPL server, no address is required
+lein repl :headless # nREPL container is started for this directory. Wait until you see the "started" line in `docker logs` if it's the first run.
+lein repl :connect # nREPL client container connects to the detached nREPL server, no address is required.
 ```
 
 ## Notes

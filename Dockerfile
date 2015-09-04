@@ -1,4 +1,4 @@
-FROM delitescere/java:8
+FROM delitescere/jdk:8
 
 MAINTAINER josh@grahamis.com
 
