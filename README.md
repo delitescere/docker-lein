@@ -4,8 +4,6 @@
 ## Introduction
 This is a minimal Docker image for [leiningen](https://github.com/technomancy/leiningen) tasks. It is from [delitescere/jdk](https://hub.docker.com/r/delitescere/jdk/) on Docker Hub.
 
-The pre-squashed size is 267 MB and after using [docker-squash](https://github.com/jwilder/docker-squash), it is just 186 MB.
-
 This image is for development-time activities. You can run your packaged component in an image from [delitescere/java](https://hub.docker.com/r/delitescere/java/)) on Docker Hub (as long as you only need the JRE provided by "compact3" profile, which is likely).
 
 ## Build
