@@ -1,5 +1,6 @@
 # docker-lein
 
+[![](https://badge.imagelayers.io/delitescere/lein:latest.svg)](https://imagelayers.io/?images=delitescere/lein:latest 'Get your own badge on imagelayers.io')
 
 ## Introduction
 This is a minimal Docker image for [leiningen](https://github.com/technomancy/leiningen) tasks. It is from [delitescere/jdk](https://hub.docker.com/r/delitescere/jdk/) on Docker Hub.
