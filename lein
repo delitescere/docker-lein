@@ -16,13 +16,17 @@ repl_client() {
   # Share network stack with the nREPL server container.
   # Only specifies the port as "localhost" is assumed and being explicit can cause problems.
   ##
+  local clientContainerName="repl$(pwd | tr '/' '.')"
   docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --name="${clientContainerName}" --net="container:${serverContainerName}" delitescere/lein -o repl :connect :${nreplPort}
 }
 
+leiner() {
+  local containerName="$$$(pwd | tr '/' '.')"
+  docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --name="${containerName}" --net="container:${serverContainerName}" $*
+}
+
 nreplPort=55555
-serverContainerName="nREPL-$(pwd | tr '/' '.')"
-clientContainerName="repl-$(pwd | tr '/' '.')"
-containerName="lein-$(pwd | tr '/' '.')"
+serverContainerName="nREPL$(pwd | tr '/' '.')"
 volumeOpts="--volume=$PWD:/home/lein/code --volume=$HOME/.m2:/home/lein/.m2"
 workdirOpt="--workdir=/home/lein/code"
 
@@ -34,16 +38,17 @@ if [ "$1" = "repl" ]; then
     repl_client
     exit $?
   fi
-elif [ "$1" = "docker" ]; then
+elif [ "$1" = "sh" ]; then
   shift
   if [ "$1" = "-c" ]; then
     shift
-    docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --name="${containerName}" --net="container:${serverContainerName}" --entrypoint=/bin/sh delitescere/lein -c "$*"
+    leiner --entrypoint=/bin/sh delitescere/lein -c "$*"
+    status=$?
+    echo
+    exit $status
   else
-    docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --name="${containerName}" --net="container:${serverContainerName}" --entrypoint=/bin/sh delitescere/lein
+    leiner --entrypoint=/bin/sh delitescere/lein
   fi
 else
-  docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --name="${containerName}" --net="container:${serverContainerName}" delitescere/lein $@
+  leiner delitescere/lein $@
 fi
-echo
-
