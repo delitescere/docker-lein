@@ -22,7 +22,7 @@ repl_client() {
 
 leiner() {
   local containerName="$$$(pwd | tr '/' '.')"
-  docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --name="${containerName}" --net="container:${serverContainerName}" $*
+  docker run ${volumeOpts} ${workdirOpt} --rm --interactive --tty --name="${containerName}" --net="container:${serverContainerName}" "$@"
 }
 
 nreplPort=55555
