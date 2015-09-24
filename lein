@@ -33,10 +33,10 @@ workdirOpt="--workdir=/home/lein/code"
 if [ "$1" = "repl" ]; then
   if [ "$2" = ":headless" ]; then
     repl_server
-    exit $?
   elif [ "$2" = ":connect" ]; then
     repl_client
-    exit $?
+  else
+    leiner delitescere/lein $@
   fi
 elif [ "$1" = "sh" ]; then
   shift
